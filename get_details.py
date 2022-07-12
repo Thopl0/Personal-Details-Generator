@@ -1,4 +1,7 @@
+import random
 from req import get_html
+from get_country import get_country
+
 
 def get_details():
     titles = {}
@@ -17,8 +20,16 @@ def get_details():
         except IndexError:
             pass
 
-    
-    titles["Job"] = employment[1]
+    job = {}
+    start_salary = random.randint(100000, 500000)
+    job["Occupation"] = employment[1]
+    job["Preferred Country to Work"] = get_country()
+    job["Experience"] = f"Less than {random.randint(1, 5)} years in related work"
+    job["Salary Range"] = f"${start_salary} - ${start_salary + 100000}"
+
+    titles["Country of Residence"] = get_country()
+    titles["Job"] = job
+
     del titles["Email"]
 
     return titles
