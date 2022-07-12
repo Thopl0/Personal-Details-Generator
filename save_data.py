@@ -1,56 +1,30 @@
-import csv
 import json
 from get_details import get_details
-from get_uni import get_uni
+from get_edu import get_uni, get_deg
 
 
 # getting all the details
-data = []
-def get_data():
-
+data = {}
+def get_data() -> None:
     num_of_entries = int(input("Enter the number of entries:\n>>"))
 
     for i in range(num_of_entries):
         print(f"getting entry {i+1}...")
+        education ={}
         details = get_details()
-        details["University"], details["GPA"] = get_uni()
-
-        data.append(details)
-
-    field_names = details.keys()
-
-    return field_names
-
-
-# writing the details to csv file
-def write_data_csv():
-    field_names = get_data()
-    print("writing entries...")
-    with open("data.csv", "a") as entries:
-        entry = csv.DictWriter(entries, fieldnames=field_names)
-        entry.writeheader()
-
-        for detail in data:
-            entry.writerow(detail)
         
+        education["University"] = get_uni()
+        education["Degree"], education["Degree Type"], education["From Year"], education["To Year"], education["GPA"] = get_deg()
 
-# writing the data to json file
+        details["Education"] = education
+
+        data[f"Person {i+1}"] = details
+
+
 def write_data_json():
+    get_data()
     with open("data.json", "a") as entries:
-        json.dump(data, entries, indent=2)
+        json.dump(data, entries, indent=4)
 
 
-# writing the data to txt file
-def write_data_txt():
-    with open("data.txt", "a") as entries:
-        for details in data:
-            key = details.keys()
-            value = details.values()
-
-            for a, b in zip(key, value):
-                entries.write(f"{a} = {b}\n")
-            entries.write("\n\n\n\n")
-
-write_data_csv()
 write_data_json()
-write_data_txt()
